@@ -2,9 +2,7 @@
 
 #### Overview
 
-We usually talk about interfaces in terms of behavior. Any object, for example, can implement the `fmt` package's `Stringer` interface, by implementing a String() method, which returns a string.
-
-It is certainly true that calling functions via interfaces sometimes creates allocations that won't occur if we call the concrete object's functions directly. However, typically, performance hits with proper interface usage are minimal. And, the benefits of interfaces in package, application, and framework design, can be substantial. Moreover, the Go compiler will sometimes choose to ignore your interface, and compile your code such that the underlying concrete object is called directly.
+We usually talk about interfaces in terms of behavior. Any object, for example, can implement the `fmt` package's `Stringer` interface, by implementing a `String()` method, which returns a string.
 
 Let's begin with a quick look at how Go implements interfaces.
 
@@ -21,11 +19,11 @@ Interfaces are implemented as a struct that has two fields:
 
 **Compile Time**
 
-The Go compiler checks whether a concrete type implements the interface it purports to implement. That's how Go knows whether a concrete type implements an interface.
+The Go compiler checks whether a concrete type implements the interface it purports to implement.
 
 **Runtime**
 
-At runtime, Go caches the function lookup inside the interface in what Russ Cox calls an `itable`, so that the next lookup is faster.
+At runtime, Go caches the lookup of the concrete type's function inside the interface in what Russ Cox calls an `itable`, so that subsequent lookups are faster.
 
 **Assignment**
 
@@ -33,9 +31,9 @@ Interfaces are useful only where they contain concrete objects. You can create a
 
 #### Why Interfaces are Useful
 
-Interfaces are useful in four main ways. They allow us to:
+Here are some of the ways interfaces are useful:
 
-* **Create an application**, like a server or worker, whose base object has fields all of whose types are interface types. See `implementation-examples/application-server`. This is useful for three main reasons:
+* **Create an application**, like a server or worker, whose base object has fields all of whose types are interface types. See `implementation-examples/application-server`. Using interfaces types for struct fields is useful to:
   * Constrain each field's behavior. Our base object's logger field may use a package that has 100 exported functions, we may prefer to create a Logger interface that contains only 5 of those functions, and therefore constrain our application to use only those 5.
 
   * Swap out the underlying implementation of each base object field, without changing our base object's implementation. Suppose our base object has a field of type Respository (interface) that represents all its required data access. We can swap out the underlying concrete object from a database, to a filestore, without changing our implementation, so long as our filestore implements the same list of function signatures contained in our Repository interface. This is of course crucial for mocking.
