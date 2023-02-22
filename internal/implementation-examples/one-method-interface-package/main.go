@@ -1,7 +1,6 @@
 // This is a simplified version of the fmt package.
 // If an object has a String() method, it implements the fmt package's Stringer interface.
-// If an object does not have a String() method, the fmt package tries very hard to print
-// the string version of that object.
+// If an object does not have a String() method, we print reflect.ValueOf(any).String()
 package main
 
 import (
