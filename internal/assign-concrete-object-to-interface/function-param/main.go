@@ -15,9 +15,9 @@ func main() {
 	describe(c)
 }
 
-func describe(cat mover) {
-	cat.move()
-	// cat.speak() // cat is a mover, and cannot speak
+func describe(m mover) {
+	m.move()
+	// m.speak() // m is a mover, and cannot speak
 }
 
 func (c cat) speak() {
