@@ -19,6 +19,28 @@
 // The name Interface is intentional, as it describes a particular kind of Go pattern, where the Interface
 // describes any object that implements its list (> 1) of methods. As opposed to the -er - named interfaces,
 // like Stringer, which implement only one method.
+
+// Capitalize every third alphanumeric character in a string
+// For the purposes of counting, ignore non alphanumeric characters
+
+// eg Aspiration.com, where n == 3, should become asPirAtiOn.cOm
+// package mapper
+
+// Interface provides the method signatures that must be implemented
+// on objects passed to the MapString method
+//type Interface interface {
+//	TransformRune(pos int)
+//	GetValueAsRuneSlice() []rune
+//}
+
+// MapString takes an Interface and performs operations according
+// to the data provided by Interface
+//
+//	func MapString(i Interface) {
+//		for pos := range i.GetValueAsRuneSlice() {
+//			i.TransformRune(pos)
+//		}
+//	}
 package main
 
 import (

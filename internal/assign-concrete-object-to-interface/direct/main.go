@@ -1,7 +1,9 @@
 // direct assignment
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type cat struct{}
 
@@ -13,22 +15,18 @@ type mover interface {
 func main() {
 	// Create a cat, and call its methods
 	c := cat{}
+
 	c.move()
 	c.speak()
 	// assign the concrete type cat to the mover interface
-	var i mover = c
+	var m mover = c
 
-	i.move()
-	// i.speak() // speak() method is not available to i
+	m.move()
+	//m.speak() // m is a mover, not a speaker
 
-	castCat := i.(cat) // type assertion provides access to the underlying concrete type
-	castCat.move()
-	castCat.speak()
-
-	if castCat, ok := i.(cat); ok { // perform checks using the "ok" idiom
-		castCat.move()
-		castCat.speak()
-	}
+	assertCat := m.(cat) // type assertion provides access to the underlying concrete type
+	assertCat.move()
+	assertCat.speak()
 }
 
 func (c cat) speak() {

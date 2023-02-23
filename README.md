@@ -8,14 +8,14 @@ Let's begin with a quick look at how Go implements interfaces.
 
 #### How Go Interfaces Work
 
-See Russ Cox's blog post here: https://research.swtch.com/interfaces
+See Russ Cox's blog post here: https://research.swtch.com/interfaces, and the Go FAQ https://go.dev/doc/faq#nil_error
 
 Go is a typed language, and Go interfaces are types.
 
 Interfaces are implemented as a struct that has two fields:
 
 * A pointer to its underlying concrete type
-* That type's data
+* A pointer to that type's data
 
 **Compile Time**
 

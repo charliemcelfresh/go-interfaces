@@ -1,15 +1,21 @@
+// https://google.github.io/styleguide/go/decisions#interfaces
+// Go interfaces generally belong in the package that consumes
+// values of the interface type, not a package that implements the interface type.
 package main
 
 import (
 	"encoding/json"
 	"net/http"
 
-	"go.uber.org/zap"
+	"github.com/sirupsen/logrus"
 )
 
-// The claim is that this logger is comprised only of these methods, not all zap.Logger methods
+// Our logger interface provides access only to the methods specified here, not all logrus methods
 type Logger interface {
-	Error(msg string, fields ...zap.Field)
+	Info(args ...interface{})
+	Debug(args ...interface{})
+	Warn(args ...interface{})
+	Error(args ...interface{})
 }
 
 // Even though this Repo interface is comprised of all Repo methods, we still pull it into the implementer
@@ -20,18 +26,20 @@ type Repo interface {
 
 // Server's field types are interfaces, for two reasons:
 //  1. We can replace their underlying implementations without changing our Server code
-//  2. In the case of Logger, we are claiming our Logger object is comprised only of the zap.Logger
+//  2. In the case of Logger, we are claiming our Logger object is comprised only of the logrus
 //     methods in our Logger interface
 type Server struct {
-	Respository Repo
-	Logger      Logger
+	Repository Repo
+	Logger     Logger
 }
 
 func NewServer() Server {
+	logrus.Error()
 	r := NewRepository()
+	l := logrus.New()
 	return Server{
-		Respository: r,
-		Logger:      zap.NewExample(),
+		Repository: r,
+		Logger:     l,
 	}
 }
 
@@ -43,7 +51,7 @@ func main() {
 
 func (s Server) GetItem() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		i := s.Respository.GetItem()
+		i := s.Repository.GetItem()
 		err := json.NewEncoder(w).Encode(&i)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
